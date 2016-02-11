@@ -27,9 +27,9 @@ We will use WebdriverIO wrapper for Selenium as well as its addon WebdriverCSS w
 npm install
 ```
 
-If you experience any problems make sure we're on the same train by comparing node versions. We work with:
-- node v0.12.7
-- npm v2.11.3
+If you experience any problems make sure we're on the same train by comparing node versions. We tested it with:
+- node: v0.12.7, v4.1.1
+- npm:  v2.11.3, v2.14.4
 
 For easy version switch install nvm:
 https://github.com/creationix/nvm/
@@ -58,12 +58,12 @@ Set `isLocalSeleniumUsed` to true.
 
 ## Running tests
 
-Start your selenium server with one terminal tab / window
+Start your selenium server with one terminal tab / window:
 ```
 selenium-standalone start
 ```
 
-Run your first tests with 
+Run your first tests within another:
 ```
 node index.js
 ```
