@@ -35,11 +35,13 @@ First off all you'll need to specify your testing enviroment.
 ### BrowserStack
 
 Set isLocalSeleniumUsed to false and create in root folder credentials.json with your api keys like this:
- `{
+ ```JSON
+ {
    "browserstack": {
      "user": "urBSuser",
      "key": "urBSkey"
    }
- }`
+ }
+ ```
 
 ## Running tests
