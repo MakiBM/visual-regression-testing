@@ -1,0 +1,11 @@
+{
+	"osx-elCaptain-safari9": {
+	    "browserName": "safari"
+	},
+	"osx-elCaptain-chrome48": {
+	    "browserName": "chrome"
+	},
+	"osx-elCaptain-firefox44": {
+	    "browserName": "firefox"
+	}
+}
