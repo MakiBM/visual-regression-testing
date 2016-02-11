@@ -57,7 +57,7 @@ Set `isLocalSeleniumUsed` to false and create in root folder credentials.json wi
 
 Set `isLocalSeleniumUsed` to true.
 
-Note for Win: IE needs page to be served from localhost as of security reasons.
+Note for Win: IE needs page to be served from localhost as of security reasons. <br/>
 Note for OSX: Safari needs extension and enviroment prerequisites:
 - http://www.seleniumhq.org/download/
 - http://stackoverflow.com/questions/19971088/how-to-open-safari-browser-using-webdriver
@@ -85,5 +85,5 @@ It will produce your base images. Later when you run the same command it will cr
 
 ## Resources
 
-http://www.creativebloq.com/web-design/automate-visual-regression-testing-111517944
-http://ngeor.net/2016/02/adventures-with-automated-browser-tests-in-javascript/
+1. http://www.creativebloq.com/web-design/automate-visual-regression-testing-111517944
+2. http://ngeor.net/2016/02/adventures-with-automated-browser-tests-in-javascript/
