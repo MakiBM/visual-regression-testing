@@ -5,19 +5,21 @@
     var webdriverio  = require('webdriverio'),
         webdrivercss = require('webdrivercss');
 
-    // Enviroment settings
-    var isLocalSeleniumUsed = true;
-
-    // External seetings files
-    var links        = require('./links.json'),
-        browsers     = (isLocalSeleniumUsed) ? require('./browsers-win10-local.json') // keep it updated
-                                             : require('./browsers-browserstack.json');
 
     /**
      *  SETTINGS
      *  
      *  All common config goes here for a cleaner boilerplate code. 
      */
+    
+    // Enviroment settings
+    var isLocalSeleniumUsed = true;
+    
+    // External seetings files
+    var _links       = require('./links.json'),
+        _browsers    = (isLocalSeleniumUsed) ? require('./browsers-win10-local.json') // keep it updated
+                                             : require('./browsers-browserstack.json');
+
     var config = {
         webdrivercss: {
             screenshotRoot: 'visual/baseline',
@@ -59,13 +61,13 @@
         // TODO - doublecheck it with browser stack - issue with resolution might be an effect of resources given within free account
         if(!isLocalSeleniumUsed) {
             // Extend each BrowsterStack browser with common capabilities
-            browsers[browser]['browserstack.debug'] = 'true';
-            browsers[browser]['browserstack.local'] = 'false';
-            browsers[browser]['resolution'] = '1920x1080';
+            _browsers[browser]['browserstack.debug'] = 'true';
+            _browsers[browser]['browserstack.local'] = 'false';
+            _browsers[browser]['resolution'] = '1920x1080';
         }
 
         // Configure webdriverio
-        config.webdriverio.desiredCapabilities = browsers[browser];
+        config.webdriverio.desiredCapabilities = _browsers[browser];
         var client = webdriverio.remote(config.webdriverio);
 
         // Initialize webdrivercss
@@ -86,10 +88,10 @@
      */
     function runTest(client) {
         // Go through all links 
-        for(var linkName in links) {
+        for(var linkName in _links) {
             var title = linkName + '_' + browser;
 
-            client = client.url(links[linkName]);
+            client = client.url(_links[linkName]);
             client = client.webdrivercss(title, {
                 name: 'snapshot',
                 elem: 'body'
@@ -106,7 +108,7 @@
      *  Run all browsers. Opens all, execute in order.
      *  TODO For parallel execution get into multiremote mode and selenium GRID
      */
-    for(var browser in browsers) {
+    for(var browser in _browsers) {
         runBrowser(browser);
     }
     
