@@ -1,0 +1,14 @@
+{
+	"win7-ie9": {
+	    "os": "Windows",
+	    "os_version": "7",
+	    "browser": "ie",
+	    "browser_version": "9.0"
+	},
+	"win7-chrome48": {
+	    "os": "Windows",
+	    "os_version": "7",
+	    "browser": "Chrome",
+	    "browser_version": "48.0"
+	}
+}

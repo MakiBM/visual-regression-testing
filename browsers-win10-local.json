@@ -1,0 +1,11 @@
+{
+	"win10-ie11": {
+	    "browserName": "internet explorer"
+	},
+	"win10-chrome48": {
+	    "browserName": "chrome"
+	},
+	"win10-firefox44": {
+	    "browserName": "firefox"
+	}
+}
