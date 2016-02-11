@@ -17,7 +17,8 @@ To run the server you can use:
 selenium-standalone start
 ```
 
-*You might need to install Java SDK if you haven't already so do it to be able to tun selenium.
+*You might need to install Java SDK if you haven't already so do it to be able to run selenium.
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
 ## Install node dependencies
 
@@ -56,6 +57,12 @@ Set `isLocalSeleniumUsed` to false and create in root folder credentials.json wi
 
 Set `isLocalSeleniumUsed` to true.
 
+Note for Win: IE needs page to be served from localhost as of security reasons.
+Note for OSX: Safari needs extension and enviroment prerequisites:
+- http://www.seleniumhq.org/download/
+- http://stackoverflow.com/questions/19971088/how-to-open-safari-browser-using-webdriver
+- https://itisatechiesworld.wordpress.com/selenium/selenium-webdriver/steps-to-get-safari-webdriver-running-on-mac-osx/
+
 ## Running tests
 
 Start your selenium server with one terminal tab / window:
@@ -67,3 +74,16 @@ Run your first tests within another:
 ```
 node index.js
 ```
+
+It will produce your base images. Later when you run the same command it will create and evaluate comparisons
+
+## Warnings
+
+1. When you load your urls from remote server you should look out on usage of background images. Browsers trigger `load` event before `background-image` is retrived. Exactly the same scenario applies to any other async operation like loading third party widgets (google maps, youtube videos etc). 
+
+2. For the moment WebdriverCSS doesn't support multiremote method so there is no way to run those tests in parallel. Waiting for official 2.0 release!
+
+## Resources
+
+http://www.creativebloq.com/web-design/automate-visual-regression-testing-111517944
+http://ngeor.net/2016/02/adventures-with-automated-browser-tests-in-javascript/
