@@ -3,7 +3,9 @@
 
     // NPM packages
     var webdriverio  = require('webdriverio'),
-        webdrivercss = require('webdrivercss');
+        webdrivercss = require('webdrivercss'),
+        assert       = require('assert'),
+        colors       = require('colors/safe');
 
 
     /**
@@ -14,8 +16,9 @@
     
     // Enviroment settings
     var isLocalSeleniumUsed = true;
-    
+
     // External seetings files
+    var browser;
     var _links       = require('./links.json'),
         _browsers    = (isLocalSeleniumUsed) ? require('./browsers-win10-local.json') // keep it updated
                                              : require('./browsers-browserstack.json');
@@ -48,6 +51,14 @@
             user: credentials.browserstack.user,
             key: credentials.browserstack.key
         };
+
+        // Extend each BrowsterStack browser with common capabilities
+        // TODO - doublecheck it with browser stack - issue with resolution might be an effect of resources given within free account
+        for(browser in _browsers) {
+            _browsers[browser]['browserstack.debug'] = 'true';
+            _browsers[browser]['browserstack.local'] = 'false';
+            _browsers[browser]['resolution'] = '1920x1080';
+        }
     }
 
 
@@ -57,15 +68,6 @@
      *  Setup each browser, run test and close it. 
      */
     function runBrowser(browser) { 
-
-        // TODO - doublecheck it with browser stack - issue with resolution might be an effect of resources given within free account
-        if(!isLocalSeleniumUsed) {
-            // Extend each BrowsterStack browser with common capabilities
-            _browsers[browser]['browserstack.debug'] = 'true';
-            _browsers[browser]['browserstack.local'] = 'false';
-            _browsers[browser]['resolution'] = '1920x1080';
-        }
-
         // Configure webdriverio
         config.webdriverio.desiredCapabilities = _browsers[browser];
         var client = webdriverio.remote(config.webdriverio);
@@ -74,8 +76,12 @@
         webdrivercss.init(client, config.webdrivercss);
 
         // Initialize webdriverio client with reassignment to make it available without chaining so we may pass client around and decouple concerns.
-        client = client.init(); 
-        client = runTest(client);
+        client = client.init()
+                       .windowHandleMaximize()
+                       .timeoutsImplicitWait(100);
+
+        client = runTest(client, browser);
+
         client.end();
     }
 
@@ -84,9 +90,8 @@
      *  TESTS
      *  
      *  Make snapshots inside given browser
-     *  TODO console test with mocha (?)
      */
-    function runTest(client) {
+    function runTest(client, browser) {
         // Go through all links 
         for(var linkName in _links) {
             var title = linkName + '_' + browser;
@@ -95,10 +100,21 @@
             client = client.webdrivercss(title, {
                 name: 'snapshot',
                 elem: 'body'
-            });
+            }, logResults(title));
         }
 
         return client;
+    }
+
+    function logResults(name) {
+        return function(err, res) {
+            if(res.snapshot[0].isWithinMisMatchTolerance) {
+                console.log(colors.green('ok '), ' | ', name,  ' | ',res.snapshot[0].message);
+            } else {
+                console.log(colors.red('err'), ' | ', name,  ' | ',res.snapshot[0].message + ' at:');
+                console.log(res.snapshot[0].diffPath);
+            }
+        };
     }
 
 
@@ -106,9 +122,8 @@
      *  ENTRY POINT
      *  
      *  Run all browsers. Opens all, execute in order.
-     *  TODO For parallel execution get into multiremote mode and selenium GRID
      */
-    for(var browser in _browsers) {
+    for(browser in _browsers) {
         runBrowser(browser);
     }
     
