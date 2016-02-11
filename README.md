@@ -17,7 +17,7 @@ To run the server you can use:
 selenium-standalone start
 ```
 
-*You might need to install Java SDK if you haven't already so do it to be able to run selenium. <br/>
+*You might need to install Java JDK if you haven't already so do it to be able to run selenium. <br/>
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
 ## Install node dependencies
