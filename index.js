@@ -9,13 +9,15 @@
     var isLocalSeleniumUsed = true;
 
     // External seetings files
-    var credentials  = require('./credentials.json'),
-        links        = require('./links.json'),
+    var links        = require('./links.json'),
         browsers     = (isLocalSeleniumUsed) ? require('./browsers-win10-local.json') // keep it updated
                                              : require('./browsers-browserstack.json');
 
-
-    // All common config goes here for a cleaner boilerplate code.
+    /**
+     *  SETTINGS
+     *  
+     *  All common config goes here for a cleaner boilerplate code. 
+     */
     var config = {
         webdrivercss: {
             screenshotRoot: 'visual/baseline',
@@ -23,17 +25,35 @@
             misMatchTolerance: 0.05,
             screenWidth: [1920, 1680]
         },
+        webdriverio: {}
+    };
+
+    if(!isLocalSeleniumUsed) {
+        // For cloud testing system expects you to have credentials.json in your root folder where you pass your api keys like this:
+        // {
+        //   "browserstack": {
+        //     "user": "urBSuser",
+        //     "key": "urBSkey"
+        //   }
+        // }
+        var credentials  = require('./credentials.json');
+
         // Extend settings for Browserstack
-        webdriverio: (isLocalSeleniumUsed) ? {} : {
+        config.webdriverio = {
             host: 'hub.browserstack.com',
             port: 80,
             logLevel: 'silent',
             user: credentials.browserstack.user,
             key: credentials.browserstack.key
-        } 
-    };
+        };
+    }
 
-    // Setup browser, run test and close it.
+
+    /**
+     *  BROWSERS
+     *  
+     *  Setup each browser, run test and close it. 
+     */
     function runBrowser(browser) { 
 
         // TODO - doublecheck it with browser stack - issue with resolution might be an effect of resources given within free account
@@ -57,8 +77,13 @@
         client.end();
     }
 
-    // Make snapshots inside given browser
-    // TODO console test with mocha (?)
+
+    /**
+     *  TESTS
+     *  
+     *  Make snapshots inside given browser
+     *  TODO console test with mocha (?)
+     */
     function runTest(client) {
         // Go through all links 
         for(var linkName in links) {
@@ -74,8 +99,13 @@
         return client;
     }
 
-    // Run all browsers. Opens all, execute in order. 
-    // TODO For parallel execution get into multiremote mode and selenium GRID
+
+    /**
+     *  ENTRY POINT
+     *  
+     *  Run all browsers. Opens all, execute in order.
+     *  TODO For parallel execution get into multiremote mode and selenium GRID
+     */
     for(var browser in browsers) {
         runBrowser(browser);
     }
